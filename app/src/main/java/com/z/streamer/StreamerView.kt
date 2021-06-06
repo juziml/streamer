@@ -57,14 +57,18 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
     }
     val xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_ATOP)
 
-    override fun onDraw(canvas: Canvas) {
+    //发现每次用的时候都搞不清楚谁往谁身上盖
+    //如果A盖到B上，那么 先画B 然后选顶MODE，再画A
+
+   override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         //开启离屏缓冲
         val count = canvas.saveLayer(0F,0F,width.toFloat(),height.toFloat(),null)
-        canvas.drawBitmap(bitmapStreamer,40F,0F,mergePaint)
-        mergePaint.xfermode = xfermode
-        canvas.drawBitmap(bitmapContent,0F,0F,mergePaint)
-        mergePaint.xfermode = null
+       canvas.drawBitmap(bitmapStreamer,40F,0F,mergePaint)//盖上流光
+       mergePaint.xfermode = xfermode
+       canvas.drawBitmap(bitmapContent,0F,0F,mergePaint)//内容
+
+       mergePaint.xfermode = null
         canvas.restoreToCount(count)
     }
 }
