@@ -47,27 +47,29 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
         val canvasStreamer = Canvas(bitmapStreamer).apply {
             density = 0
         }
-        val path = Path()
-        path.moveTo(10F.dp,0F)
-        path.lineTo(20F.dp,0F)
-        path.lineTo(20F.dp,100F.dp)
-        path.lineTo(10F.dp,100F.dp)
-        path.close()
-        canvasStreamer.drawPath(path,paintStreamer)
+
+//        canvasStreamer.drawPath(path,paintStreamer)
+    }
+    val path = Path().also {
+        it.moveTo(10F.dp,0F)
+        it.lineTo(20F.dp,0F)
+        it.lineTo(20F.dp,100F.dp)
+        it.lineTo(10F.dp,100F.dp)
+        it.close()
     }
     val xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_ATOP)
-
     //发现每次用的时候都搞不清楚谁往谁身上盖
     //如果A盖到B上，那么 先画B 然后选顶MODE，再画A
+    //xfermode 不只能合成“图片”，只要是“图形”应该都可以
 
    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         //开启离屏缓冲
         val count = canvas.saveLayer(0F,0F,width.toFloat(),height.toFloat(),null)
-       canvas.drawBitmap(bitmapStreamer,40F,0F,mergePaint)//盖上流光
+//       canvas.drawBitmap(bitmapStreamer,40F,0F,mergePaint)//盖上流光
+       canvas.drawPath(path,paintStreamer)
        mergePaint.xfermode = xfermode
        canvas.drawBitmap(bitmapContent,0F,0F,mergePaint)//内容
-
        mergePaint.xfermode = null
         canvas.restoreToCount(count)
     }
