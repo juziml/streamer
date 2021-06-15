@@ -3,6 +3,7 @@ package com.z.streamer
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.view.View
 
@@ -17,7 +18,7 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
         color = Color.BLACK
     }
 
-    private val bitmapContent = Bitmap.createBitmap(100.dp, 100.dp, Bitmap.Config.ARGB_8888).apply {
+    private val bitmapContent = Bitmap.createBitmap(200.dp, 100.dp, Bitmap.Config.ARGB_8888).apply {
         density = Resources.getSystem().displayMetrics.density.toInt()
     }
 
@@ -28,27 +29,24 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
     }
     private val mergePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    private val bitmapStreamer = Bitmap.createBitmap(100.dp, 100.dp, Bitmap.Config.ARGB_8888).apply {
-        density = Resources.getSystem().displayMetrics.density.toInt()
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
     }
 
     init {
         val canvas = Canvas(bitmapContent).apply {
             density = 0
         }
-        val rectF = RectF()
-        rectF.left = 20F.dp
-        rectF.right = rectF.left + 100F.dp
-        rectF.top = 20F.dp
-        rectF.bottom = rectF.top + 20F.dp
-//        canvas.drawRect(rectF,paintTxt)
-        canvas.drawText("十年可期",0F, (bitmapContent.height/2).toFloat(),paintTxt)
 
-        val canvasStreamer = Canvas(bitmapStreamer).apply {
-            density = 0
-        }
+        val txt = "十年可期"
+        val txtWidth = paintTxt.measureText(txt)
+        canvas.drawText(txt,0F, (bitmapContent.height/2).toFloat(),paintTxt)
 
-//        canvasStreamer.drawPath(path,paintStreamer)
+        val img = BitmapFactory.decodeResource(context.resources
+            ,R.drawable.ic_bar_chart,BitmapFactory.Options())//不能加载vector drawable
+        val imgTop = bitmapContent.height /2F - (img.width /2F)
+        canvas.drawBitmap(img,txtWidth,imgTop,paintTxt)
     }
     val path = Path().also {
         it.moveTo(10F.dp,0F)
@@ -59,7 +57,7 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
     }
     val xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_ATOP)
     //发现每次用的时候都搞不清楚谁往谁身上盖
-    //如果A盖到B上，那么 先画B 然后选顶MODE，再画A
+    //如果A盖到B上，那么 先画B 然后选顶MODE，再画A （所以倒着写更舒服！）
     //xfermode 不只能合成“图片”，只要是“图形”应该都可以
 
    override fun onDraw(canvas: Canvas) {
@@ -72,5 +70,8 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
        canvas.drawBitmap(bitmapContent,0F,0F,mergePaint)//内容
        mergePaint.xfermode = null
         canvas.restoreToCount(count)
+    }
+    private fun refreshPath(progress:Float){
+
     }
 }
