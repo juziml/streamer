@@ -46,9 +46,7 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
         Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     }
 
-    init {
-        "img.width = $imgWidth".log()
-    }
+    var progress = 0F
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -68,14 +66,15 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
         val img = BitmapFactory.decodeResource(
             context.resources, R.drawable.ic_cup, options
         )
-        "img.width = ${img.width} img.height=${img.height}".log()
         val txtWidth = paintTxt.measureText(txt)
         val textBounds = Rect()
         paintTxt.getTextBounds(txt, 0, txt.length, textBounds)
+
         val txtY = (height / 2F) - (textBounds.top + textBounds.bottom) / 2 + txtHeightOffset
         val startX = (width / 2) - (txtWidth + img.width) / 2F
-        val imgTop = height / 2F - (img.height / 2F)
         canvas.drawText(txt, startX, txtY, paintTxt)
+
+        val imgTop = height / 2F - (img.height / 2F)
         canvas.drawBitmap(img, startX + txtWidth, imgTop, paintTxt)
 
     }
@@ -119,7 +118,6 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
         floatAnim.cancel()
     }
 
-    var progress = 0F
     private fun refreshPath(progress: Float) {
         path.reset()
         val startX = progress * width
