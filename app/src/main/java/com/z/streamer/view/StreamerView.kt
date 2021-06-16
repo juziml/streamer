@@ -15,7 +15,7 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
     val path = Path()
     val xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_ATOP)
     private val streamerWidth = 30F.dp
-    private val streamerHeightOffset = 10F.dp
+    private val streamerHeightOffset = streamerWidth
 
     private val imgWidth = 30.dp
     private val txtHeightOffset = 4F.dp
@@ -88,19 +88,21 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
 
     }
 
-    val floatAnim = ObjectAnimator.ofFloat(0F, 1F).apply {
-        duration = 2000
-        repeatMode = ValueAnimator.RESTART
-        repeatCount = ValueAnimator.INFINITE
-        interpolator = LinearInterpolator()
+    val floatAnim by lazy {
+        ObjectAnimator.ofFloat(0F, 1F).apply {
+            duration = 2000
+            repeatMode = ValueAnimator.RESTART
+            repeatCount = ValueAnimator.INFINITE
+            interpolator = LinearInterpolator()
+            addUpdateListener {
+                progress = it.animatedValue as Float
+                postInvalidate()
+            }
+        }
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        floatAnim.addUpdateListener {
-            progress = it.animatedValue as Float
-            postInvalidate()
-        }
         floatAnim.start()
     }
 
