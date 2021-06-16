@@ -54,7 +54,7 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
         val canvas = Canvas(contentBitmap).apply {
             density = 0
         }
-        val txt = "歇会儿 "
+        val txt = "等等呗 "
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeResource(
@@ -98,7 +98,7 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
     }
 
     val floatAnim = ObjectAnimator.ofFloat(0F, 1F).apply {
-        duration = 1400
+        duration = 2000
         repeatMode = ValueAnimator.RESTART
         repeatCount = ValueAnimator.INFINITE
         interpolator = LinearInterpolator()
