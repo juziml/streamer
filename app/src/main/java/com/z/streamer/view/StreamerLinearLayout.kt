@@ -48,7 +48,6 @@ class StreamerLinearLayout(context: Context, attributeSet: AttributeSet) :
         canvas.drawPath(path, paintStreamer)
         paintStreamer.xfermode = null
         canvas.restoreToCount(count)
-        "dispatchDraw $canvas".log("StreamerLinearLayout")
     }
 
     override fun onDetachedFromWindow() {
@@ -61,16 +60,23 @@ class StreamerLinearLayout(context: Context, attributeSet: AttributeSet) :
         path.reset()
         val startX = progress * width
         path.moveTo(startX, 0F)
-        path.lineTo(startX + streamerWidth, streamerHeightOffset)
+        val cos = Math.cos(Math.toRadians(45.0))
+        val c = Math.abs(streamerWidth / cos)
+        val num = c * c - (streamerWidth * streamerWidth)
+        //y轴 长度
+        val b = Math.sqrt(num).toFloat() + streamerHeightOffset
+        path.lineTo(startX + streamerWidth, b)
         path.lineTo(startX + streamerWidth, height.toFloat())
-        path.lineTo(startX, height - streamerHeightOffset)
+        path.lineTo(startX, height - b)
         path.close()
     }
 
-    fun start(){
+    fun start() {
         floatAnim.start()
     }
-    fun stop(){
+
+    fun stop() {
         floatAnim.cancel()
+
     }
 }

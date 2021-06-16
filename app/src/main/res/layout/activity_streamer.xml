@@ -9,18 +9,62 @@
 
     <com.z.streamer.view.StreamerView
         android:layout_gravity="center"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="#000"
          />
     <com.z.streamer.view.StreamerLinearLayout
+        android:id="@+id/sll"
+        android:background="#a0a0a0"
         android:layout_width="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:layout_height="wrap_content">
         <com.z.streamer.view.PureView
-            android:layout_width="300dp"
+            android:layout_width="150dp"
             android:background="#000000"
-            android:layout_height="300dp"/>
+            android:layout_height="150dp"/>
     </com.z.streamer.view.StreamerLinearLayout>
+    <com.z.streamer.view.StreamerLinearLayout
+        android:id="@+id/sll2"
+        android:layout_width="wrap_content"
+        android:background="#000000"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#dbdbdb"
+            android:text="喝杯咖啡~"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:background="@drawable/ic_cup"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv"
+            android:layout_height="40dp"/>
+    </com.z.streamer.view.StreamerLinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:text="开始"
+            android:onClick="onStartBtnClick"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:text="停止"
+            android:onClick="onStopBtnClick"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 </LinearLayout>
