@@ -1,0 +1,11 @@
+package com.z.streamer
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+
+class StreamerActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_streamer)
+    }
+}

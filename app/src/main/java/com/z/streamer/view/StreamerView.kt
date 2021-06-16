@@ -1,24 +1,15 @@
-package com.z.streamer
+package com.z.streamer.view
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
-
-private val Int.dp get() = (this * (0.5F + Resources.getSystem().displayMetrics.density)).toInt()
-private val Float.dp get() = this * (0.5F + Resources.getSystem().displayMetrics.density)
-
-fun String.log() {
-    Log.i("streamer", this)
-}
+import com.z.streamer.R
+import com.z.streamer.dp
+import com.z.streamer.log
 
 class StreamerView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
     val path = Path()
@@ -38,7 +29,7 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
     private val paintStreamer = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         strokeCap = Paint.Cap.ROUND
         style = Paint.Style.FILL
-        color = Color.parseColor("#e6e6e6")
+        color = Color.parseColor("#8adede")
     }
     private val mergePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
@@ -50,7 +41,7 @@ class StreamerView(context: Context, attributeSet: AttributeSet) : View(context,
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        "onSizeChanged".log()
+        "onSizeChanged".log("StreamerView")
         val canvas = Canvas(contentBitmap).apply {
             density = 0
         }
