@@ -36,10 +36,10 @@
 |名称|说明|类型|
 |----|----|----|
 | sc_angle|角度 | integer|
-| sc_width| | dimension|
-| sc_heightOffset| | dimension|
-|sc_color | |color |
-| sc_duration| | integer|
+| sc_width| x轴直角边宽度| dimension|
+| sc_heightOffset| 高度修正| dimension|
+|sc_color | 颜色|color |
+| sc_duration| 动画时间| integer|
 
 形状计算说明
 
