@@ -7,38 +7,70 @@
 
     <com.qiesi.streamer.StreamerConstraintLayout
         android:id="@+id/sc"
+        app:sc_color="@color/color_streamer"
+        app:sc_heightOffset="10dp"
+        app:sc_width="40dp"
+        app:sc_angle="45"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <View
             android:layout_width="300dp"
-            android:background="#000"
-            android:layout_height="150dp"/>
+            android:layout_height="100dp"
+            android:background="#DE35B3" />
+    </com.qiesi.streamer.StreamerConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv"
+    <com.qiesi.streamer.StreamerConstraintLayout
+        android:id="@+id/sc3"
+        android:background="#41464F"
+        app:sc_color="@color/color_streamer"
+        app:sc_heightOffset="10dp"
+        app:sc_width="40dp"
+        app:sc_angle="45"
+        android:layout_width="wrap_content"
+        android:padding="40dp"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:background="#DE35B3" />
+    </com.qiesi.streamer.StreamerConstraintLayout>
+
+    <com.qiesi.streamer.StreamerConstraintLayout
+        android:id="@+id/sc2"
+        android:layout_marginTop="20dp"
+        app:sc_color="@color/color_streamer"
+        app:sc_angle="45"
+        app:sc_heightOffset="20dp"
+        app:sc_duration="1400"
+        android:background="#41464F"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_margin="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="喝杯咖啡~"
-            android:textColor="#dbdbdb"
-            android:textSize="20dp"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            android:textStyle="bold"
-            android:translationY="7dp"
-            app:layout_constraintRight_toLeftOf="@+id/iv"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/iv"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv"
-            app:layout_constraintBottom_toBottomOf="@+id/tv"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ic_cup"
-            app:layout_constraintLeft_toRightOf="@+id/tv"
-             />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="喝杯咖啡~"
+                android:textColor="#dbdbdb"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:translationY="10dp"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_cup" />
+        </LinearLayout>
 
     </com.qiesi.streamer.StreamerConstraintLayout>
 

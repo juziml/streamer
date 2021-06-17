@@ -7,14 +7,16 @@ import android.content.res.Resources
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 
-private fun String.log(secondTag:String="") {
-    if(BuildConfig.DEBUG){
+private fun String.log(secondTag: String = "") {
+    if (BuildConfig.DEBUG) {
         Log.i("--streamer", "$secondTag $this")
     }
 }
+
 private val Int.dp get() = (this * (0.5F + Resources.getSystem().displayMetrics.density)).toInt()
 private val Float.dp get() = this * (0.5F + Resources.getSystem().displayMetrics.density)
 
@@ -25,33 +27,75 @@ private val Float.dp get() = this * (0.5F + Resources.getSystem().displayMetrics
  * @param context
  * @param attributeSet
  */
-class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet) :
+class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
     ConstraintLayout(context, attributeSet) {
-//    init {
+    constructor(context: Context) : this(context, null)
+
+    //    init {
 //        setWillNotDraw(false)//无背景时开启draw,很有用的方法，记录一下
 //    }
+    private val DEFAULT_STREAMER_WIDTH = 30F.dp
+    private val DEFAULT_ANGLE_SIZE = 30
+    private val DEFAULT_COLOR = Color.parseColor("#F2F4F7")
+    private val DEFAULT_DURATION = 2000L
+
     private val path = Path()
     private val xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
-    private val streamerWidth = 30F.dp
-    private val streamerHeightOffset = 0F
-    private val angleSize:Double = 30.0
-    private val paintStreamer = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#8adede")
-    }
+    private val streamerWidth: Float
+    private val streamerHeightOffset: Float
+    private val angleSize: Int
+    private val streamerColor: Int
+    private val animDuration: Long
 
-   private var progress = 0F
+    private val paintStreamer = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    private var progress = 0F
 
     private val floatAnim by lazy {
         ObjectAnimator.ofFloat(0F, 1F).apply {
-            duration = 2000
             repeatMode = ValueAnimator.RESTART
             repeatCount = ValueAnimator.INFINITE
-            interpolator = LinearInterpolator()
+            interpolator = AccelerateInterpolator()
             addUpdateListener {
                 progress = it.animatedValue as Float
                 postInvalidate()
             }
         }
+    }
+
+    init {
+        if (null != attributeSet) {
+            val typeArray =
+                context.obtainStyledAttributes(attributeSet, R.styleable.StreamerConstraintLayout)
+            streamerWidth = typeArray.getDimensionPixelOffset(
+                R.styleable.StreamerConstraintLayout_sc_width,
+                DEFAULT_STREAMER_WIDTH.toInt()
+            ).toFloat()
+            streamerHeightOffset =
+                typeArray.getDimensionPixelOffset(
+                    R.styleable.StreamerConstraintLayout_sc_heightOffset,
+                    0
+                ).toFloat()
+            angleSize = typeArray.getInt(
+                R.styleable.StreamerConstraintLayout_sc_angle,
+                DEFAULT_ANGLE_SIZE.toInt()
+            )
+            streamerColor =
+                typeArray.getColor(R.styleable.StreamerConstraintLayout_sc_color, DEFAULT_COLOR)
+            animDuration = typeArray.getInt(
+                R.styleable.StreamerConstraintLayout_sc_duration,
+                DEFAULT_DURATION.toInt()
+            ).toLong()
+            typeArray.recycle()
+        } else {
+            streamerWidth = DEFAULT_STREAMER_WIDTH
+            streamerHeightOffset = 0F
+            angleSize = DEFAULT_ANGLE_SIZE
+            streamerColor = DEFAULT_COLOR
+            animDuration = DEFAULT_DURATION
+        }
+        paintStreamer.color = streamerColor
+
     }
 
     override fun dispatchDraw(canvas: Canvas) {
@@ -74,7 +118,7 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet) :
         path.reset()
         val startX = progress * width
         path.moveTo(startX, 0F)
-        val cos = Math.cos(Math.toRadians(angleSize))
+        val cos = Math.cos(Math.toRadians(angleSize.toDouble()))
         val c = Math.abs(streamerWidth / cos)
         val num = c * c - (streamerWidth * streamerWidth)
         //y轴 长度
@@ -86,6 +130,7 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet) :
     }
 
     fun start() {
+        floatAnim.duration = animDuration
         floatAnim.start()
     }
 
