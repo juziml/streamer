@@ -8,7 +8,6 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.LinearInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 
 private fun String.log(secondTag: String = "") {
@@ -48,9 +47,7 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
     private val animDuration: Long
 
     private val paintStreamer = Paint(Paint.ANTI_ALIAS_FLAG)
-
     private var progress = 0F
-
     private val floatAnim by lazy {
         ObjectAnimator.ofFloat(0F, 1F).apply {
             repeatMode = ValueAnimator.RESTART
