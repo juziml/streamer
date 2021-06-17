@@ -41,6 +41,8 @@
 |sc_color | 颜色|color |
 | sc_duration| 动画时间| integer|
 
-形状计算说明
+### 形状计算
+
+根据sc_width 与sc_angle 计算出 垂直方向边长
 
 ![](desc.png)
