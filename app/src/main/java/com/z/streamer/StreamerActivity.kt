@@ -3,25 +3,22 @@ package com.z.streamer
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.z.streamer.view.StreamerLinearLayout
+import com.qiesi.streamer.R
+import com.qiesi.streamer.StreamerConstraintLayout
 
 class StreamerActivity : AppCompatActivity() {
-    lateinit var sll: StreamerLinearLayout
-    lateinit var sll2: StreamerLinearLayout
+    lateinit var sc: StreamerConstraintLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_streamer)
-        sll = findViewById(R.id.sll)
-        sll2 = findViewById(R.id.sll2)
+        sc = findViewById(R.id.sc)
     }
 
     fun onStartBtnClick(v: View) {
-        sll.start()
-        sll2.start()
+        sc.start()
     }
 
     fun onStopBtnClick(v: View) {
-        sll.stop()
-        sll2.stop()
+        sc.stop()
     }
 }

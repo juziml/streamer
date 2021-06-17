@@ -1,33 +1,47 @@
-package com.z.streamer.view
+package com.qiesi.streamer
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.*
 import android.util.AttributeSet
-import android.view.View
+import android.util.Log
 import android.view.animation.LinearInterpolator
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.z.streamer.dp
-import com.z.streamer.log
 
+private fun String.log(secondTag:String="") {
+    if(BuildConfig.DEBUG){
+        Log.i("--streamer", "$secondTag $this")
+    }
+}
+private val Int.dp get() = (this * (0.5F + Resources.getSystem().displayMetrics.density)).toInt()
+private val Float.dp get() = this * (0.5F + Resources.getSystem().displayMetrics.density)
 
-class StreamerLinearLayout(context: Context, attributeSet: AttributeSet) :
+/**
+ * 流光viewGroup，继承ConstraintLayout
+ * 在子view 绘制完成后 合成流光动画
+ * 使用方法：[start] [stop]
+ * @param context
+ * @param attributeSet
+ */
+class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet) {
-    val path = Path()
-    val xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
-
+//    init {
+//        setWillNotDraw(false)//无背景时开启draw,很有用的方法，记录一下
+//    }
+    private val path = Path()
+    private val xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
     private val streamerWidth = 30F.dp
-    private val streamerHeightOffset = streamerWidth
-
+    private val streamerHeightOffset = 0F
+    private val angleSize:Double = 30.0
     private val paintStreamer = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.parseColor("#8adede")
     }
 
-    var progress = 0F
+   private var progress = 0F
 
-    val floatAnim by lazy {
+    private val floatAnim by lazy {
         ObjectAnimator.ofFloat(0F, 1F).apply {
             duration = 2000
             repeatMode = ValueAnimator.RESTART
@@ -43,7 +57,7 @@ class StreamerLinearLayout(context: Context, attributeSet: AttributeSet) :
     override fun dispatchDraw(canvas: Canvas) {
         val count = canvas.saveLayer(0F, 0F, width.toFloat(), height.toFloat(), null)
         super.dispatchDraw(canvas)//内容
-        refreshPath(progress)
+        refreshPath()
         paintStreamer.xfermode = xfermode
         canvas.drawPath(path, paintStreamer)
         paintStreamer.xfermode = null
@@ -56,11 +70,11 @@ class StreamerLinearLayout(context: Context, attributeSet: AttributeSet) :
     }
 
 
-    private fun refreshPath(progress: Float) {
+    private fun refreshPath() {
         path.reset()
         val startX = progress * width
         path.moveTo(startX, 0F)
-        val cos = Math.cos(Math.toRadians(45.0))
+        val cos = Math.cos(Math.toRadians(angleSize))
         val c = Math.abs(streamerWidth / cos)
         val num = c * c - (streamerWidth * streamerWidth)
         //y轴 长度

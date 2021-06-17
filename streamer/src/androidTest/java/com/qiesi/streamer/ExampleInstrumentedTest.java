@@ -1,4 +1,4 @@
-package com.z.streamer;
+package com.qiesi.streamer;
 
 import android.content.Context;
 
