@@ -50,6 +50,9 @@
             app:layout_constraintLeft_toRightOf="@+id/tv"
             android:layout_height="40dp"/>
     </com.z.streamer.view.StreamerLinearLayout>
+    <com.z.streamer.view.PureLinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
