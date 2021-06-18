@@ -40,11 +40,11 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
 
     private val path = Path()
     private val xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
-     var streamerWidth: Float
-     var streamerHeightOffset: Float
-     var angleSize: Int
-     var streamerColor: Int
-     var animDuration: Long
+    var streamerWidth: Float
+    var streamerHeightOffset: Float
+    var angleSize: Int
+    var streamerColor: Int
+    var animDuration: Long
 
     private val paintStreamer = Paint(Paint.ANTI_ALIAS_FLAG)
     private var progress = 0F
