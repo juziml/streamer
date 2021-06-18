@@ -100,6 +100,7 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
         super.dispatchDraw(canvas)//内容
         refreshPath()
         paintStreamer.xfermode = xfermode
+        paintStreamer.color = streamerColor
         canvas.drawPath(path, paintStreamer)
         paintStreamer.xfermode = null
         canvas.restoreToCount(count)
