@@ -127,17 +127,17 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
     }
 
     override fun dispatchDraw(canvas: Canvas) {
-//        val count = canvas.saveLayer(0F, 0F, width.toFloat(), height.toFloat(), null)
+        val count = canvas.saveLayer(0F, 0F, width.toFloat(), height.toFloat(), null)
         val translateX = progress * (width + streamerWidth)
         val translateY = progress * height
         super.dispatchDraw(canvas)//内容
-//        paintStreamer.xfermode = xfermode
+        paintStreamer.xfermode = xfermode
         paintStreamer.color = streamerColor
         canvas.translate(translateX, -translateY)
         canvas.drawPath(path, paintStreamer)
         paintStreamer.xfermode = null
         canvas.translate(-translateX, translateY)
-//        canvas.restoreToCount(count)
+        canvas.restoreToCount(count)
     }
 
     override fun onDetachedFromWindow() {
