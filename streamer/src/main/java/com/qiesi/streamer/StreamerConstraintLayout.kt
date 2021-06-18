@@ -1,5 +1,6 @@
 package com.qiesi.streamer
 
+import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
@@ -8,6 +9,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.animation.AccelerateInterpolator
+import android.view.animation.LinearInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 
 private fun String.log(secondTag: String = "") {
@@ -30,13 +32,11 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
     ConstraintLayout(context, attributeSet) {
     constructor(context: Context) : this(context, null)
 
-    //    init {
-//        setWillNotDraw(false)//无背景时开启draw,很有用的方法，记录一下
-//    }
     private val DEFAULT_STREAMER_WIDTH = 30F.dp
     private val DEFAULT_ANGLE_SIZE = 30
     private val DEFAULT_COLOR = Color.parseColor("#F2F4F7")
     private val DEFAULT_DURATION = 2000L
+    private val DEFAULT_SKIP_COUNT = 2
 
     private val path = Path()
     private val xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
@@ -45,17 +45,37 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
     var angleSize: Int
     var streamerColor: Int
     var animDuration: Long
+    var skipCount = DEFAULT_SKIP_COUNT
 
     private val paintStreamer = Paint(Paint.ANTI_ALIAS_FLAG)
     private var progress = 0F
+
+    private var animPlayCount = 0
     private val floatAnim by lazy {
         ObjectAnimator.ofFloat(0F, 1F).apply {
             repeatMode = ValueAnimator.RESTART
             repeatCount = ValueAnimator.INFINITE
-            interpolator = AccelerateInterpolator()
+            interpolator = LinearInterpolator()
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator?) {
+                }
+
+                override fun onAnimationEnd(animation: Animator?) {
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                }
+
+                override fun onAnimationRepeat(animation: Animator?) {
+                    animPlayCount += 1
+                }
+
+            })
             addUpdateListener {
-                progress = it.animatedValue as Float
-                postInvalidate()
+                if (animPlayCount == 0 || animPlayCount % skipCount == 0) {
+                    progress = it.animatedValue as Float
+                    postInvalidate()
+                }
             }
         }
     }
@@ -83,6 +103,11 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
                 R.styleable.StreamerConstraintLayout_sc_duration,
                 DEFAULT_DURATION.toInt()
             ).toLong()
+            skipCount = typeArray.getInt(
+                R.styleable.StreamerConstraintLayout_sc_skip_count,
+                DEFAULT_SKIP_COUNT
+            )
+
             typeArray.recycle()
         } else {
             streamerWidth = DEFAULT_STREAMER_WIDTH
@@ -91,8 +116,6 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
             streamerColor = DEFAULT_COLOR
             animDuration = DEFAULT_DURATION
         }
-        paintStreamer.color = streamerColor
-
     }
 
     override fun dispatchDraw(canvas: Canvas) {
@@ -114,6 +137,7 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
 
     private fun refreshPath() {
         path.reset()
+        if (progress == 0F) return
         val startX = progress * width
         path.moveTo(startX, 0F)
         val cos = Math.cos(Math.toRadians(angleSize.toDouble()))
@@ -133,7 +157,9 @@ class StreamerConstraintLayout(context: Context, attributeSet: AttributeSet?) :
     }
 
     fun stop() {
+        progress = 1.0F
+        invalidate()
         floatAnim.cancel()
-
+        animPlayCount = 0
     }
 }

@@ -42,6 +42,7 @@
         app:sc_angle="45"
         app:sc_heightOffset="20dp"
         app:sc_duration="1400"
+        app:sc_skip_count="2"
         android:background="#41464F"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
