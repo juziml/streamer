@@ -41,7 +41,7 @@
 | sc_duration| 动画时间| integer|
 | sc_skip_count| 执行间隔模数| integer|
 
-### 形状计算
+### 思路图解
 
 根据sc_width 与sc_angle 计算出 垂直方向边长
 
