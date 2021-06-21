@@ -15,8 +15,8 @@
         android:layout_marginTop="20dp"
         app:sc_color="@color/color_streamer"
         app:sc_angle="45"
-        app:sc_heightOffset="20dp"
         app:sc_duration="1400"
+        app:sc_skip_count="2"
         android:background="#41464F"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -37,9 +37,9 @@
 |----|----|----|
 | sc_angle|角度 | integer|
 | sc_width| x轴直角边宽度| dimension|
-| sc_heightOffset| 高度修正| dimension|
 |sc_color | 颜色|color |
 | sc_duration| 动画时间| integer|
+| sc_skip_count| 执行间隔模数| integer|
 
 ### 形状计算
 
